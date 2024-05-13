@@ -156,7 +156,7 @@ class HomeView extends GetView<HomeController> {
                     ),
                   ),
                   title: Text(
-                    contact.nama,
+                    "${contact!.Nama}",
                     style: blackTextStyle.copyWith(
                       fontSize: 18,
                       fontWeight: medium,

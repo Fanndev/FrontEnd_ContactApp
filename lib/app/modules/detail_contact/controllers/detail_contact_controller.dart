@@ -27,13 +27,13 @@ class DetailContactController extends GetxController {
   Contact getContact() {
     // Ensure that contactId is not empty
     if (contactId.isEmpty) {
-      return Contact(id: '', nama: '', alamat: '', noTelp: '');
+      return Contact(id: '', Nama: '', Alamat: '', NoTelp: '');
     }
 
     // Find the contact by its id
     Contact? foundContact = homeController.allContacts.firstWhere(
       (contact) => contact.id == contactId,
-      orElse: () => Contact(id: '', nama: '', alamat: '', noTelp: ''),
+      orElse: () => Contact(id: '', Nama: '', Alamat: '', NoTelp: ''),
     );
 
     return foundContact!;
@@ -54,7 +54,6 @@ class DetailContactController extends GetxController {
           duration: Duration(seconds: 3),
         );
 
-        Get.offAllNamed(Routes.HOME);
         return true;
       } else {
         // Gagal menghapus data

@@ -20,6 +20,9 @@ class HomeController extends GetxController {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
+
+        // print(responseData);
+
         // Periksa apakah atribut 'result' ada dan bukan null
         if (responseData != null && responseData.containsKey('result')) {
           // Ubah respons 'result' menjadi daftar objek Contact
@@ -41,7 +44,4 @@ class HomeController extends GetxController {
       print('Terjadi kesalahan saat mengambil data kontak: $error');
     }
   }
-
-  getContactById(String contactId) {}
-
 }

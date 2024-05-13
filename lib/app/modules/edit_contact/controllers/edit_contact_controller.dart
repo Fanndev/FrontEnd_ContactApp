@@ -1,6 +1,4 @@
-import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:contact_app/app/modules/data/models/contact_model.dart';
 import 'package:contact_app/app/modules/home/controllers/home_controller.dart';
@@ -12,14 +10,12 @@ import 'package:flutter/material.dart';
 
 class EditContactController extends GetxController {
   late String contactId;
-
   late HomeController homeController;
-  late Contact contact; // Gunakan late modifier di sini
+  late Contact contact;
 
-  // Variabel untuk menyimpan nilai dari TextField
-  late TextEditingController namaController,
-      telephoneController,
-      alamatController;
+  TextEditingController namaController = TextEditingController();
+  TextEditingController telephoneController = TextEditingController();
+  TextEditingController alamatController = TextEditingController();
 
   @override
   void onInit() {
@@ -27,48 +23,54 @@ class EditContactController extends GetxController {
     contactId = Get.arguments['id'] ?? '';
     homeController = Get.find<HomeController>();
     contact = getContact();
-    namaController = TextEditingController(text: contact.nama);
-    telephoneController = TextEditingController(text: contact.noTelp);
-    alamatController = TextEditingController(text: contact.alamat);
+    initiateValues();
+    updateController();
+    print(contactId);
     print(namaController.text);
     print(telephoneController.text);
     print(alamatController.text);
-
-    // Tambahkan listener untuk setiap TextEditingController
-    namaController.addListener(_onNamaChanged);
-    telephoneController.addListener(_onTelephoneChanged);
-    alamatController.addListener(_onAlamatChanged);
   }
 
-  // Method untuk mengambil kontak
   Contact getContact() {
     if (contactId.isEmpty) {
-      return Contact(id: '', nama: '', alamat: '', noTelp: '');
+      return Contact(id: '', Nama: '', Alamat: '', NoTelp: '');
     }
-
-    Contact? foundContact = homeController.allContacts.firstWhere(
+    return homeController.allContacts.firstWhere(
       (contact) => contact.id == contactId,
-      orElse: () => Contact(id: '', nama: '', alamat: '', noTelp: ''),
+      orElse: () => Contact(id: '', Nama: '', Alamat: '', NoTelp: ''),
     );
-
-    return foundContact!;
   }
 
-  // Method untuk menyimpan perubahan pada kontak
-  Future<bool> updateContact(
-      String id, String nama, String alamat, String noTelp) async {
+  void updateController() {
+    namaController.text = contact.Nama;
+    telephoneController.text = contact.NoTelp;
+    alamatController.text = contact.Alamat;
+  }
+
+  void initiateValues() {
+    namaController.text = contact.Nama;
+    telephoneController.text = contact.NoTelp;
+    alamatController.text = contact.Alamat;
+  }
+
+  Future<bool> updateContact() async {
     try {
+      var body = {
+        'Nama': namaController.text,
+        'Alamat': alamatController.text,
+        'NoTelp': telephoneController.text,
+      };
+
       final response = await http.put(
-        Uri.parse(Api().updateContact + id),
+        Uri.parse(Api().updateContact + contactId),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
-          'nama': nama,
-          'alamat': alamat,
-          'noTelp': noTelp,
-        }),
+        body: jsonEncode(body),
       );
+
+      print(response.body);
+      print('Updated contact URL: ${Api().updateContact + contactId}');
 
       if (response.statusCode == 200) {
         Get.snackbar(
@@ -101,33 +103,5 @@ class EditContactController extends GetxController {
       );
       return false;
     }
-  }
-
-  // Method untuk memperbarui nilai namaController saat ada perubahan pada nama
-  void _onNamaChanged() {
-    contact.nama = namaController.text;
-  }
-
-  // Method untuk memperbarui nilai telephoneController saat ada perubahan pada nomor telepon
-  void _onTelephoneChanged() {
-    contact.noTelp = telephoneController.text;
-  }
-
-  // Method untuk memperbarui nilai alamatController saat ada perubahan pada alamat
-  void _onAlamatChanged() {
-    contact.alamat = alamatController.text;
-  }
-
-  @override
-  void onClose() {
-    // Hapus listener untuk menghindari memory leaks
-    namaController.removeListener(_onNamaChanged);
-    telephoneController.removeListener(_onTelephoneChanged);
-    alamatController.removeListener(_onAlamatChanged);
-
-    namaController.dispose();
-    telephoneController.dispose();
-    alamatController.dispose();
-    super.onClose();
   }
 }

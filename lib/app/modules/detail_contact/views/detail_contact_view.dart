@@ -87,7 +87,7 @@ class DetailContactView extends GetView<DetailContactController> {
             child: Obx(() {
               var contact = controller.getContact();
               return Text(
-                contact.nama,
+                "${contact.Nama}",
                 style: blackTextStyle.copyWith(
                   fontSize: 20,
                   fontWeight: semibold,
@@ -145,7 +145,7 @@ class DetailContactView extends GetView<DetailContactController> {
                       ),
                     ),
                     subtitle: Text(
-                      contact.noTelp,
+                      "${contact.NoTelp}",
                       style: blackTextStyle.copyWith(
                         fontSize: 20,
                       ),
@@ -178,7 +178,7 @@ class DetailContactView extends GetView<DetailContactController> {
                       ),
                     ),
                     subtitle: Text(
-                      contact.alamat,
+                      "${contact.Alamat}",
                       style: blackTextStyle.copyWith(
                         fontSize: 20,
                       ),

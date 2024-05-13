@@ -1,22 +1,22 @@
 class Contact {
   final String id;
-  late final String nama;
-  late final String alamat;
-  late final String noTelp;
+  String Nama;
+  String Alamat;
+  String NoTelp;
 
   Contact({
     required this.id,
-    required this.nama,
-    required this.alamat,
-    required this.noTelp,
+    required this.Nama,
+    required this.Alamat,
+    required this.NoTelp,
   });
 
   factory Contact.fromJson(Map<String, dynamic> json) {
     return Contact(
       id: json['_id'],
-      nama: json['Nama'],
-      alamat: json['Alamat'],
-      noTelp: json['NoTelp'],
+      Nama: json['Nama'],
+      Alamat: json['Alamat'],
+      NoTelp: json['NoTelp'],
     );
   }
 }

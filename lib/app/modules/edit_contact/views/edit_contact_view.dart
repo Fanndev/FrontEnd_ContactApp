@@ -11,10 +11,6 @@ import '../controllers/edit_contact_controller.dart';
 class EditContactView extends GetView<EditContactController> {
   EditContactView({Key? key}) : super(key: key);
 
-  // TextEditingController nameC = TextEditingController();
-  // TextEditingController telephoneC = TextEditingController();
-  // TextEditingController alamatC = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,12 +35,11 @@ class EditContactView extends GetView<EditContactController> {
             child: IconButton(
               onPressed: () {
                 // Panggil fungsi untuk menyimpan perubahan pada kontak
-                controller.updateContact(
-                  controller.contact.id,
-                  controller.namaController.text,
-                  controller.telephoneController.text,
-                  controller.alamatController.text,
-                );
+                controller.updateContact();
+                print(controller.contact.id);
+                print(controller.namaController.text);
+                print(controller.alamatController.text);
+                print(controller.telephoneController.text);
               },
               icon: const Icon(
                 Icons.check,
@@ -63,8 +58,7 @@ class EditContactView extends GetView<EditContactController> {
         centerTitle: true,
       ),
       body: Obx(() {
-        if (controller.contact != null) {
-          // Perbaiki pengecekan ini
+        if (controller.contact.id.isNotEmpty) {
           return ListView(
             children: [
               const SizedBox(height: 10),
